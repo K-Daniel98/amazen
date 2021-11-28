@@ -39,30 +39,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests()
-            .antMatchers(HttpMethod.OPTIONS).permitAll()
-            .antMatchers("/login").permitAll()
-            .antMatchers("/items/**").permitAll()
-            .antMatchers("/item/**").permitAll()
-            .antMatchers("/storage").permitAll()
-            .antMatchers("/storage/**").permitAll()
-            .antMatchers("/error").permitAll()
-            .antMatchers("/public").permitAll()
-            .antMatchers("/register").permitAll()
-            .antMatchers("/h2-console/**/**").permitAll()
-            .anyRequest().authenticated()
-            .and();
-
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/login");
-        web.ignoring().antMatchers("/error");
-        web.ignoring().antMatchers("/public");
-        web.ignoring().antMatchers("/api/error");
-        web.ignoring().antMatchers(HttpMethod.OPTIONS);
+        web.ignoring()
+            .antMatchers("/login")
+            .antMatchers("/error")
+            .antMatchers("/public")
+            .antMatchers("/api/error")
+            .antMatchers(HttpMethod.OPTIONS)
+            .antMatchers(HttpMethod.POST)
+            .antMatchers(HttpMethod.PATCH)
+            .antMatchers(HttpMethod.GET);
     }
 
     @Override

@@ -17,17 +17,15 @@
   background: white;
   border-radius: 50px;
 }
+.logout {
+  margin: 0 1em;
+}
 .button-container {
   display: flex;
   justify-content: space-evenly;
-}
-.edit-button-group input {
-  margin: 0.5em 0;
 }
 .card-header {
   padding-top: 0.35em;
   padding-bottom: 0.35em;
 }
-.form-field {
-  width: 450px;
-}
+

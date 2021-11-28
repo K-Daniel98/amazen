@@ -6,6 +6,7 @@ import hu.unideb.web.amazen.core.user.dto.UserDto;
 import hu.unideb.web.amazen.core.user.entity.Role;
 import hu.unideb.web.amazen.core.user.entity.User;
 import hu.unideb.web.amazen.core.user.exception.InvalidCredentialsException;
+import hu.unideb.web.amazen.core.user.exception.PasswordMismatchException;
 import hu.unideb.web.amazen.core.user.exception.UserAlreadyExistsException;
 import hu.unideb.web.amazen.core.user.repository.UserRepository;
 import hu.unideb.web.amazen.core.user.service.UserService;
@@ -38,7 +39,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(UserDto user) {
+    public LoginResponseDto register(UserDto user) {
+
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            throw new PasswordMismatchException();
+        }
+
         if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException();
         }
@@ -47,6 +53,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         this.userRepository.save(User.getUserFromDto(user));
+
+        return LoginResponseDto.builder()
+            .token(jwtTokenProvider.createToken(user.getEmail(), List.of(user.getRole())))
+            .build();
     }
 
     @Override

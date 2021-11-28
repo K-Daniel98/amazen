@@ -1,0 +1,25 @@
+<nb-card>
+  <nb-card-header>Create a new item</nb-card-header>
+  <nb-card-body [className]="'edit-button-group'">
+    <nb-form-field [className]="'form-field'">
+      <nb-icon nbPrefix icon="text-outline" pack="eva"></nb-icon>
+      <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" [(ngModel)]="item.name" maxlength="50">
+    </nb-form-field>
+    <nb-form-field>
+      <nb-icon nbPrefix icon="file-text-outline" pack="eva"></nb-icon>
+      <input type="text" nbInput fullWidth shape="rectangle" placeholder="Description" [(ngModel)]="item.description" maxlength="100">
+    </nb-form-field>
+    <nb-form-field>
+      <nb-icon nbPrefix icon="image-outline" pack="eva"></nb-icon>
+      <input type="text" nbInput fullWidth shape="rectangle" placeholder="Image URL" [(ngModel)]="item.imageUrl" maxlength="512">
+    </nb-form-field>
+    <nb-form-field>
+      <nb-icon nbPrefix icon="pricetags-outline" pack="eva"></nb-icon>
+      <input type="number" nbInput fullWidth shape="rectangle" placeholder="Price" [(ngModel)]="item.price" maxlength="99999999">
+    </nb-form-field>
+  </nb-card-body>
+  <nb-card-footer [className]="'button-container'">
+    <button nbButton outline status="success" (click)="createItem()">Create</button>
+    <button nbButton outline status="primary" (click)="ref.close()">Close</button>
+  </nb-card-footer>
+</nb-card>

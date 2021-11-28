@@ -10,6 +10,7 @@ import {
   NbDialogModule,
   NbUserModule,
   NbIconModule,
+  NbToastrModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { AppComponent } from './app.component';
@@ -28,6 +29,7 @@ import {
     BrowserAnimationsModule,
     NbThemeModule.forRoot({ name: 'corporate' }),
     NbSidebarModule.forRoot(),
+    NbToastrModule.forRoot(),
     NbDialogModule.forRoot(),
     NbAuthModule.forRoot({
       strategies: [
@@ -45,6 +47,10 @@ import {
           register: {
             endpoint: '/register',
             method: 'post',
+          },
+          logout: {
+            endpoint: '/logout',
+            method: 'GET',
           },
         }),
       ],

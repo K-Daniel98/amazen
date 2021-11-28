@@ -1,9 +1,10 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
-import { DeleteDialogComponent } from './dialog/delete-dialog.component';
+import { DeleteDialogComponent } from './dialog/delete-dialog/delete-dialog.component';
 import { ItemDto } from './dto/item.dto';
 import { ItemService } from './item.service';
-import { NbAuthService } from '@nebular/auth';
+import { NbAuthService, NbTokenService } from '@nebular/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shop',
@@ -11,55 +12,58 @@ import { NbAuthService } from '@nebular/auth';
   styleUrls: ['./shop.component.scss'],
 })
 export class ShopComponent implements OnInit {
-  elements: Array<ItemDto> = [
-    {
-      id: 1,
-      name: 'test item',
-      owner: 'Daniel#12',
-      description: 'Item description',
-      price: 99.99,
-      imageUrl:
-        'https://telex.hu/assets/images/20211124/1637769878-temp-kIaAKb_cover@1x.jpg',
-    },
-  ];
+  elements: Array<ItemDto> = [];
 
   isLoggedIn: boolean = false;
 
-  itemName: string = '';
-  itemPrice: number = 0.0;
-  itemDescription: string = '';
-  itemImageUrl: string = '';
+  user: any = {
+    email: '',
+  };
 
   constructor(
     private readonly dialogService: NbDialogService,
     private readonly itemService: ItemService,
-    private readonly authService: NbAuthService
+    private readonly authService: NbAuthService,
+    private readonly tokenService: NbTokenService,
+    private readonly router: Router
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.elements = await this.itemService.loadItems();
     this.isLoggedIn = await this.authService.isAuthenticated().toPromise();
-    console.log(this.isLoggedIn);
-  }
 
-  openDeleteDialog() {
-    this.dialogService.open(DeleteDialogComponent, {
-      context: 'this is some additional data passed to dialog',
-      hasBackdrop: true,
-    });
+    this.user.email = (
+      await this.tokenService.get().toPromise()
+    ).getPayload().sub;
   }
 
   open(dialog: TemplateRef<any>, data: any = undefined) {
-    console.log(data);
     this.dialogService.open(dialog, { context: { data } });
   }
 
-  async createItem() {
-    await this.itemService.createItem({
-      name: this.itemName,
-      description: this.itemDescription,
-      price: this.itemPrice,
-      imageUrl: this.itemImageUrl,
-    });
+  addItem(item: ItemDto) {
+    this.elements.push(item);
+  }
+
+  updateItem(item: ItemDto) {
+    const index = this.elements.findIndex((elem) => item.id === elem.id);
+    this.elements[index] = item;
+  }
+
+  deleteItem(id: number) {
+    const index = this.elements.findIndex((elem) => id === elem.id);
+    this.elements.splice(index, 1);
+  }
+
+  async logout() {
+    const result = await this.authService.logout('email').toPromise();
+
+    if (result.isSuccess()) {
+      await this.login();
+    }
+  }
+
+  login() {
+    return this.router.navigate(['/auth/login']);
   }
 }

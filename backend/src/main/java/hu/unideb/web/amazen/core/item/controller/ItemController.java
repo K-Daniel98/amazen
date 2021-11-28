@@ -6,6 +6,7 @@ import hu.unideb.web.amazen.core.item.exception.ItemNotFoundException;
 import hu.unideb.web.amazen.core.item.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,23 +41,24 @@ public class ItemController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('SELLER')")
     public ItemDto create(HttpServletRequest req, @RequestBody ItemDto itemDto) {
         return itemService.createItem(req, itemDto);
     }
 
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('SELLER')")
     public void delete(HttpServletRequest req, @PathVariable Long id) {
         itemService.deleteItem(req, id);
     }
 
-    @PatchMapping()
+    @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('SELLER')")
-    public void update(HttpServletRequest req, @RequestBody ItemDto itemDto) {
-        itemService.updateItem(req, itemDto);
+    public ItemDto update(HttpServletRequest req, @RequestBody ItemDto itemDto) {
+        return itemService.updateItem(req, itemDto);
     }
 
 }

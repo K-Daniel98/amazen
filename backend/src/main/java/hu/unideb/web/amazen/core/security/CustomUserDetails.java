@@ -1,6 +1,5 @@
 package hu.unideb.web.amazen.core.security;
 
-import hu.unideb.web.amazen.core.user.entity.User;
 import hu.unideb.web.amazen.core.user.exception.UserDoesNotExistException;
 import hu.unideb.web.amazen.core.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

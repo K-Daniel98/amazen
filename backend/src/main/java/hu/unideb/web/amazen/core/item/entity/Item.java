@@ -1,8 +1,6 @@
 package hu.unideb.web.amazen.core.item.entity;
 
 import hu.unideb.web.amazen.core.item.dto.ItemDto;
-import hu.unideb.web.amazen.core.order.entity.Order;
-import hu.unideb.web.amazen.core.user.dto.UserDto;
 import hu.unideb.web.amazen.core.user.entity.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -40,9 +38,6 @@ public class Item {
 
     @ManyToOne
     private User owner;
-
-    @ManyToOne
-    private Order order;
 
     public static Item getItemFromDto(ItemDto itemDto) {
         return Item.builder()

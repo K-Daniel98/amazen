@@ -5,7 +5,7 @@ import hu.unideb.web.amazen.core.user.dto.UserDto;
 
 public interface UserService {
 
-    void register(UserDto user);
+    LoginResponseDto register(UserDto user);
     LoginResponseDto login(UserDto user);
 
 }

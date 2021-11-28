@@ -12,14 +12,23 @@ import {
   NbIconModule,
   NbInputModule,
   NbLayoutModule,
+  NbPopoverModule,
+  NbToastrService,
   NbUserModule,
 } from '@nebular/theme';
-import { DeleteDialogComponent } from './dialog/delete-dialog.component';
+import { DeleteDialogComponent } from './dialog/delete-dialog/delete-dialog.component';
 import { ItemService } from './item.service';
 import { FormsModule } from '@angular/forms';
+import { UpdateDialogComponent } from './dialog/update-dialog/update-dialog.component';
+import { CreateDialogComponent } from './dialog/create-dialog/create-dialog.component';
 
 @NgModule({
-  declarations: [ShopComponent, DeleteDialogComponent],
+  declarations: [
+    ShopComponent,
+    DeleteDialogComponent,
+    UpdateDialogComponent,
+    CreateDialogComponent,
+  ],
   imports: [
     CommonModule,
     ShopRoutingModule,
@@ -33,7 +42,8 @@ import { FormsModule } from '@angular/forms';
     NbDialogModule,
     NbFormFieldModule,
     FormsModule,
+    NbPopoverModule,
   ],
-  providers: [NbDialogService, ItemService],
+  providers: [NbDialogService, ItemService, NbToastrService],
 })
 export class ShopModule {}

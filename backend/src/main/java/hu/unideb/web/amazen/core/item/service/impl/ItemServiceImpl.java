@@ -3,7 +3,7 @@ package hu.unideb.web.amazen.core.item.service.impl;
 import hu.unideb.web.amazen.core.item.dto.ItemDto;
 import hu.unideb.web.amazen.core.item.entity.Item;
 import hu.unideb.web.amazen.core.item.exception.InvalidPriceException;
-import hu.unideb.web.amazen.core.item.exception.ItemDeleteUnauthorizedException;
+import hu.unideb.web.amazen.core.item.exception.ItemActionUnauthorizedException;
 import hu.unideb.web.amazen.core.item.exception.ItemNotFoundException;
 import hu.unideb.web.amazen.core.item.repository.ItemRepository;
 import hu.unideb.web.amazen.core.item.service.ItemService;
@@ -11,9 +11,7 @@ import hu.unideb.web.amazen.core.security.JwtTokenProvider;
 import hu.unideb.web.amazen.core.user.exception.UserDoesNotExistException;
 import hu.unideb.web.amazen.core.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -75,6 +73,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto updateItem(HttpServletRequest request, ItemDto itemDto) {
 
+        if (itemDto.getPrice().compareTo(new BigDecimal(0)) < 0) {
+            throw new InvalidPriceException();
+        }
+
         var itemToUpdate = checkItemOwner(request, itemDto.getId());
         itemToUpdate.setDescription(itemDto.getDescription());
         itemToUpdate.setImageUrl(itemDto.getImageUrl());
@@ -92,7 +94,7 @@ public class ItemServiceImpl implements ItemService {
             .orElseThrow(() -> new ItemNotFoundException(id));
 
         if (!item.getOwner().getId().equals(user.getId())) {
-            throw new ItemDeleteUnauthorizedException();
+            throw new ItemActionUnauthorizedException();
         }
 
         return item;

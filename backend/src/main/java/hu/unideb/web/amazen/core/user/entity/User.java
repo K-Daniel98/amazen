@@ -1,7 +1,6 @@
 package hu.unideb.web.amazen.core.user.entity;
 
 import hu.unideb.web.amazen.core.item.entity.Item;
-import hu.unideb.web.amazen.core.order.entity.Order;
 import hu.unideb.web.amazen.core.user.dto.UserDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.UniqueConstraint;
 import java.util.List;
 import java.util.Set;
 
@@ -39,9 +37,6 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Order> orders;
 
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Item> items;
