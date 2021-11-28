@@ -1,0 +1,7 @@
+jwt:
+  token:
+    secret: fdjk34xm3=
+    lifetime: 30000000
+server:
+  servlet:
+    context-path: /api
