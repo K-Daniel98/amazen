@@ -1,0 +1,99 @@
+
+<nb-layout>
+
+  <ng-template #deleteDialog let-context let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>{{ context.data.name }}</nb-card-header>
+      <nb-card-body>Are you sure that you want to delete this item?</nb-card-body>
+      <nb-card-footer [className]="'button-container'">
+        <button nbButton outline status="danger" (click)="ref.close()">Delete</button>
+        <button nbButton outline status="primary" (click)="ref.close()">Close</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+  <ng-template #updateDialog let-context let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>{{ context.data.name }}#{{ context.data.id }}</nb-card-header>
+      <nb-card-body [className]="'edit-button-group'">
+        <nb-form-field [className]="'form-field'">
+          <nb-icon nbPrefix icon="text-outline" pack="eva"></nb-icon>
+          <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" value="{{ context.data.name }}">
+        </nb-form-field>
+        <nb-form-field>
+          <nb-icon nbPrefix icon="file-text-outline" pack="eva"></nb-icon>
+          <input type="text" nbInput fullWidth shape="rectangle" placeholder="Description" value="{{ context.data.description }}">
+        </nb-form-field>
+        <nb-form-field>
+          <nb-icon nbPrefix icon="image-outline" pack="eva"></nb-icon>
+          <input type="text" nbInput fullWidth shape="rectangle" placeholder="Image URL" value="{{ context.data.imageUrl }}">
+        </nb-form-field>
+        <nb-form-field>
+          <nb-icon nbPrefix icon="pricetags-outline" pack="eva"></nb-icon>
+          <input type="number" nbInput fullWidth shape="rectangle" placeholder="Price" value="{{ context.data.price }}">
+        </nb-form-field>
+      </nb-card-body>
+      <nb-card-footer [className]="'button-container'">
+        <button nbButton outline status="warning" (click)="ref.close()">Update</button>
+        <button nbButton outline status="primary" (click)="ref.close()">Close</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+  <ng-template #createDialog let-context let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>Create a new item</nb-card-header>
+      <nb-card-body [className]="'edit-button-group'">
+        <nb-form-field [className]="'form-field'">
+          <nb-icon nbPrefix icon="text-outline" pack="eva"></nb-icon>
+          <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" [(ngModel)]="itemName">
+        </nb-form-field>
+        <nb-form-field>
+          <nb-icon nbPrefix icon="file-text-outline" pack="eva"></nb-icon>
+          <input type="text" nbInput fullWidth shape="rectangle" placeholder="Description" [(ngModel)]="itemDescription">
+        </nb-form-field>
+        <nb-form-field>
+          <nb-icon nbPrefix icon="image-outline" pack="eva"></nb-icon>
+          <input type="text" nbInput fullWidth shape="rectangle" placeholder="Image URL" [(ngModel)]="itemImageUrl">
+        </nb-form-field>
+        <nb-form-field>
+          <nb-icon nbPrefix icon="pricetags-outline" pack="eva"></nb-icon>
+          <input type="number" nbInput fullWidth shape="rectangle" placeholder="Price" [(ngModel)]="itemPrice">
+        </nb-form-field>
+      </nb-card-body>
+      <nb-card-footer [className]="'button-container'">
+        <button nbButton outline status="success" (click)="createItem()">Create</button>
+        <button nbButton outline status="primary" (click)="ref.close()">Close</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+  <nb-layout-header [className]="'user-bar'">
+    <nb-user name="Porsekin" title="Seller" [className]="'logged-user'" *ngIf="isLoggedIn"></nb-user>
+    <div [className]="'logged-user'" *ngIf="!isLoggedIn">
+      <a href="/auth/login">Login</a>
+    </div>
+  </nb-layout-header>
+  <nb-layout-column [className]="'container'">
+    <nb-card [className]="'card'">
+      <button nbButton outline status="success" (click)="open(createDialog)">Create new item</button>
+    </nb-card>
+    <nb-card [className]="'card'" *ngFor="let elem of elements">
+      <nb-card-header [className]="'card-header'">
+        <p>Listed by <b>{{ elem.owner }}</b></p>
+      </nb-card-header>
+      <nb-card-body [className]="'item'">
+        <nb-user size="large"
+                 name="{{ elem.name }}#{{ elem.id }}"
+                 [className]="'item-data'"
+                 title="{{ elem.description }}"
+                 picture="{{ elem.imageUrl }}">
+        </nb-user>
+        <nb-button-group multiple [className]="'button-group'">
+          <button nbButton (click)="open(updateDialog, elem)"><nb-icon icon="edit-2-outline"></nb-icon></button>
+          <button nbButton (click)="open(deleteDialog, elem)"><nb-icon icon="trash-2-outline"></nb-icon></button>
+        </nb-button-group>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

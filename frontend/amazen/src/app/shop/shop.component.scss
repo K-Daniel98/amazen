@@ -1,0 +1,33 @@
+.item {
+  display: flex;
+  align-items: center;
+}
+.button-group {
+  justify-self: flex-end;
+  margin-left: auto;
+}
+.user-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  background: none;
+}
+.logged-user {
+  padding: 0.5em 1em;
+  background: white;
+  border-radius: 50px;
+}
+.button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+.edit-button-group input {
+  margin: 0.5em 0;
+}
+.card-header {
+  padding-top: 0.35em;
+  padding-bottom: 0.35em;
+}
+.form-field {
+  width: 450px;
+}

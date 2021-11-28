@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.card {
+  width: 375px;
+}
+input {
+  margin: 0.75em 0;
+}
